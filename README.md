@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Flashcard Frenzy Multiplayer 🎮🃏
 
 A real-time multiplayer flashcard game built with **Next.js, Supabase, and MongoDB**.  
