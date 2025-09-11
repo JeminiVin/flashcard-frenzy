@@ -3,36 +3,15 @@
 
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import { useAuth } from './providers'
-
-function IconUser() {
-  return (
-    <svg className="w-6 h-6 inline-block mr-2" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
-        d="M16 11c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM6 21v-1a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v1" />
-    </svg>
-  )
-}
 
 export default function Home() {
-  // attempt to read context user (if providers exist)
-  const ctxUser = (() => {
-    try { return useAuth() } catch (e) { return null }
-  })()
-
-  const [user, setUser] = useState(ctxUser ?? null)
+  const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [debug, setDebug] = useState(null)
   const [debugOpen, setDebugOpen] = useState(false)
 
   useEffect(() => {
     let mounted = true
-
-    if (ctxUser) {
-      setUser(ctxUser)
-      setLoading(false)
-      return
-    }
 
     async function load() {
       setLoading(true)
@@ -59,9 +38,9 @@ export default function Home() {
 
     return () => {
       mounted = false
-      try { sub.subscription.unsubscribe() } catch (e) {}
+      try { sub.data.subscription.unsubscribe() } catch (e) {}
     }
-  }, [ctxUser])
+  }, [])
 
   async function signInWithEmail() {
     const email = prompt('Enter your email for magic link:')
@@ -189,7 +168,6 @@ export default function Home() {
         Built with ❤️ — Next.js · Supabase · MongoDB · TailwindCSS
       </footer>
 
-      {/* Debug panel (collapsible) */}
       {debugOpen && (
         <div className="fixed right-5 bottom-5 w-96 max-h-[60vh] overflow-auto bg-white border shadow-lg rounded-lg p-4 z-50">
           <div className="flex justify-between items-center mb-2">
